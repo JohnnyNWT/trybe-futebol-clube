@@ -15,10 +15,6 @@ class usersService {
 
     const verifyPassword = await bcrypt.compare(password, userEmail?.dataValues.password);
 
-    console.log(password);
-    console.log(userEmail?.dataValues.password);
-    console.log(verifyPassword);
-
     if (!verifyPassword) {
       return { message: 'Invalid email or password', token: '' };
     }
