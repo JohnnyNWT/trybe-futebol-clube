@@ -1,5 +1,6 @@
+import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
-import { LoginType } from '../interfaces/IUsers';
+import { LoginType, role } from '../interfaces/IUsers';
 import UsersService from '../services/usersService';
 
 class usersController {
@@ -25,6 +26,18 @@ class usersController {
     }
     return res.status(200).json({ token });
   }
+
+  role = (req: Request, res: Response) => {
+    const { authorization } = req.headers;
+
+    if (!authorization) {
+      return res.status(401).json({ message: 'Token must be a valid token' });
+    }
+
+    const decode = jwt.decode(authorization) as role;
+
+    res.status(200).json({ role: decode.role });
+  };
 }
 
 export default usersController;

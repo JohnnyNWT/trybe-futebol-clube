@@ -10,3 +10,7 @@ export type LoginType = {
   message: string;
   token: string;
 };
+
+export type role = {
+  role: string
+};
