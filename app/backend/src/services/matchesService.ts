@@ -41,6 +41,22 @@ class matchesService {
     });
     return matches.map(formatMatches);
   }
+
+  async finishMatch(id: number) {
+    const match = await this._matchModel.findByPk(id);
+
+    if (!match) {
+      return { message: 'Match not found' };
+    }
+
+    if (!match.dataValues.inProgress) {
+      return { message: 'This game is over' };
+    }
+
+    match.dataValues.inProgress = false;
+    await match.save();
+    return { message: 'Finished' };
+  }
 }
 
 export default matchesService;
