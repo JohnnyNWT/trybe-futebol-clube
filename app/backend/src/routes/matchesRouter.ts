@@ -11,5 +11,10 @@ matchesRouter.patch(
   validateToken.verifyToken,
   matchesController.finishMatch.bind(matchesController),
 );
+matchesRouter.patch(
+  '/:id',
+  validateToken.verifyToken,
+  matchesController.updateMatchProgress.bind(matchesController),
+);
 
 export default matchesRouter;
