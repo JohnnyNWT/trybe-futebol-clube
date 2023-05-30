@@ -76,6 +76,23 @@ class matchesService {
 
     return match;
   }
+
+  async createMatch(
+    homeTeamId: number,
+    awayTeamId: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ) {
+    const createMatch = await this._matchModel.create({
+      homeTeamId,
+      homeTeamGoals,
+      awayTeamId,
+      awayTeamGoals,
+      inProgress: true,
+    });
+
+    return createMatch;
+  }
 }
 
 export default matchesService;
