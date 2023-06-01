@@ -5,9 +5,11 @@ import formatMatches from '../utils/formatMatches';
 
 class matchesService {
   private _matchModel: typeof MatchesModel;
+  private _teamsModel: typeof teams;
 
   constructor() {
     this._matchModel = MatchesModel;
+    this._teamsModel = teams;
   }
 
   async getAll(): Promise<IMatches[]> {
@@ -83,6 +85,12 @@ class matchesService {
     homeTeamGoals: number,
     awayTeamGoals: number,
   ) {
+    const { type, message } = await this.verifyMatches(homeTeamId, awayTeamId);
+
+    if (type.length > 0) {
+      return { type, message };
+    }
+
     const createMatch = await this._matchModel.create({
       homeTeamId,
       homeTeamGoals,
@@ -91,7 +99,25 @@ class matchesService {
       inProgress: true,
     });
 
-    return createMatch;
+    return { type: '', message: '', createMatch };
+  }
+
+  async verifyMatches(homeTeamId: number, awayTeamId: number) {
+    if (homeTeamId === awayTeamId) {
+      return {
+        type: 'EQUAL_TEAMS',
+        message: 'It is not possible to create a match with two equal teams',
+      };
+    }
+
+    const verifyHomeTeam = await this._teamsModel.findByPk(homeTeamId);
+    const verifyAwayTeam = await this._teamsModel.findByPk(awayTeamId);
+
+    if (!verifyAwayTeam || !verifyHomeTeam) {
+      return { type: 'TIME_NOT_FOUND', message: 'There is no team with such id!' };
+    }
+
+    return { type: '', message: '' };
   }
 }
 

@@ -45,12 +45,20 @@ class matchesController {
 
   async createMatch(req: Request, res: Response) {
     const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = req.body;
-    const createMatch = await this._matchService.createMatch(
+    const { type, message, createMatch } = await this._matchService.createMatch(
       homeTeamId,
       awayTeamId,
       homeTeamGoals,
       awayTeamGoals,
     );
+
+    if (type === 'EQUAL_TEAMS') {
+      return res.status(422).json({ message });
+    }
+
+    if (type === 'TIME_NOT_FOUND') {
+      return res.status(404).json({ message });
+    }
 
     return res.status(201).json(createMatch);
   }
