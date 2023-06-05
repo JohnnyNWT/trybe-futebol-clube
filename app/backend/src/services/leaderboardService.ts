@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import TeamService from './teamsService';
 import MatchesService from './matchesService';
 
@@ -39,11 +38,8 @@ class LeaderboardService {
     const totalDraws = this.calculateTotalDraws(teamMatches);
     const goalsFavor = this.calculateGoalsFavor(teamMatches, team.id);
     const goalsOwn = this.calculateGoalsOwn(teamMatches, team.id);
-    const goalsBalance = goalsFavor - goalsOwn;
-
-    return {
-      name: team.teamName,
-      totalPoints: this.calculateTotalPoints(teamMatches, team.id),
+    const goalsBalance = goalsFavor - goalsOwn; return { name: team.teamName,
+      totalPoints: this.calculatePoints(teamMatches, team.id),
       totalGames,
       totalVictories,
       totalDraws,
@@ -51,10 +47,7 @@ class LeaderboardService {
       goalsFavor,
       goalsOwn,
       goalsBalance,
-      efficiency: this.calculateEfficiency(
-        this.calculateTotalPoints(teamMatches, team.id),
-        totalGames,
-      ),
+      efficiency: this.calculateEfficiency(this.calculatePoints(teamMatches, team.id), totalGames),
     };
   }
 
@@ -65,11 +58,8 @@ class LeaderboardService {
     const totalDraws = this.calculateTotalDraws(teamMatches);
     const goalsFavor = this.calculateGoalsFavor(teamMatches, team.id);
     const goalsOwn = this.calculateGoalsOwn(teamMatches, team.id);
-    const goalsBalance = goalsFavor - goalsOwn;
-
-    return {
-      name: team.teamName,
-      totalPoints: this.calculateTotalPoints(teamMatches, team.id),
+    const goalsBalance = goalsFavor - goalsOwn; return { name: team.teamName,
+      totalPoints: this.calculatePoints(teamMatches, team.id),
       totalGames,
       totalVictories,
       totalDraws,
@@ -77,10 +67,7 @@ class LeaderboardService {
       goalsFavor,
       goalsOwn,
       goalsBalance,
-      efficiency: this.calculateEfficiency(
-        this.calculateTotalPoints(teamMatches, team.id),
-        totalGames,
-      ),
+      efficiency: this.calculateEfficiency(this.calculatePoints(teamMatches, team.id), totalGames),
     };
   }
 
@@ -91,11 +78,8 @@ class LeaderboardService {
     const totalDraws = this.calculateTotalDraws(teamMatches);
     const goalsFavor = this.calculateGoalsFavor(teamMatches, team.id);
     const goalsOwn = this.calculateGoalsOwn(teamMatches, team.id);
-    const goalsBalance = goalsFavor - goalsOwn;
-
-    return {
-      name: team.teamName,
-      totalPoints: this.calculateTotalPoints(teamMatches, team.id),
+    const goalsBalance = goalsFavor - goalsOwn; return { name: team.teamName,
+      totalPoints: this.calculatePoints(teamMatches, team.id),
       totalGames,
       totalVictories,
       totalDraws,
@@ -103,10 +87,7 @@ class LeaderboardService {
       goalsFavor,
       goalsOwn,
       goalsBalance,
-      efficiency: this.calculateEfficiency(
-        this.calculateTotalPoints(teamMatches, team.id),
-        totalGames,
-      ),
+      efficiency: this.calculateEfficiency(this.calculatePoints(teamMatches, team.id), totalGames),
     };
   }
 
@@ -125,7 +106,7 @@ class LeaderboardService {
       (match) => match.awayTeamId === teamId,
     );
 
-  private calculateTotalPoints = (matches: any[], teamId: number): number =>
+  private calculatePoints = (matches: any[], teamId: number): number =>
     matches.reduce((total, match) => {
       if (match.homeTeamId === teamId) {
         if (match.homeTeamGoals > match.awayTeamGoals) {
