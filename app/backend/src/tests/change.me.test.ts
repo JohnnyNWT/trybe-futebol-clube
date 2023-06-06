@@ -2,21 +2,20 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
-
+import Users from '../database/models/users';
 import { app } from '../app';
-import Example from '../database/models/matches';
-
-import { Response } from 'superagent';
+import MatchesModel from '../database/models/matches';
+import TeamsModel from '../database/models/teams';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Teste', () => {
+describe('Testes Matches', () => {
   let stub: sinon.SinonStub;
 
   before(() => {
-    stub = sinon.stub(Example, 'findOne');
+    stub = sinon.stub(MatchesModel, 'findOne');
   });
 
   after(() => {
@@ -1436,4 +1435,112 @@ describe('Teste', () => {
     expect(response.body.message).to.equal('Finished');
   });
   */
+});
+
+describe('Testes Teams', () => {
+  let stub: sinon.SinonStub;
+
+  before(() => {
+    stub = sinon.stub(TeamsModel, 'findOne');
+  });
+
+  after(() => {
+    stub.restore();
+  });
+
+  it('getAll should return an array of teams', async () => {
+    const expectedTeams = [
+      {
+        "id": 1,
+        "teamName": "Avaí/Kindermann"
+      },
+      {
+        "id": 2,
+        "teamName": "Bahia"
+      },
+      {
+        "id": 3,
+        "teamName": "Botafogo"
+      },
+      {
+        "id": 4,
+        "teamName": "Corinthians"
+      },
+      {
+        "id": 5,
+        "teamName": "Cruzeiro"
+      },
+      {
+        "id": 6,
+        "teamName": "Ferroviária"
+      },
+      {
+        "id": 7,
+        "teamName": "Flamengo"
+      },
+      {
+        "id": 8,
+        "teamName": "Grêmio"
+      },
+      {
+        "id": 9,
+        "teamName": "Internacional"
+      },
+      {
+        "id": 10,
+        "teamName": "Minas Brasília"
+      },
+      {
+        "id": 11,
+        "teamName": "Napoli-SC"
+      },
+      {
+        "id": 12,
+        "teamName": "Palmeiras"
+      },
+      {
+        "id": 13,
+        "teamName": "Real Brasília"
+      },
+      {
+        "id": 14,
+        "teamName": "Santos"
+      },
+      {
+        "id": 15,
+        "teamName": "São José-SP"
+      },
+      {
+        "id": 16,
+        "teamName": "São Paulo"
+      }
+    ];
+    sinon.stub(expectedTeams);
+    const response = await chai.request(app).get('/teams');
+    expect(response.status).to.equal(200);
+    expect(response.body).to.deep.equal(expectedTeams);
+  });
+});
+
+describe('', () => {
+  let usersModelStub: sinon.SinonStub;
+
+  beforeEach(() => {
+    usersModelStub = sinon.stub(Users, 'findOne');
+  });
+
+  afterEach(() => {
+    usersModelStub.restore();
+  });
+
+  it('Testa a função findUser', async () => {
+    const email = 'user@user.com';
+    const password = 'secret_user';
+
+    const response = await chai.request(app).post('/login').send({ email, password });
+    console.log(response.body);
+
+    expect(response.body.message).to.equal('Invalid email or password');
+    expect(usersModelStub.calledOnceWithExactly({ where: { email } })).to.be.true;
+  });
 });
